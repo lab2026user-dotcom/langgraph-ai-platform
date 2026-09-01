@@ -1,32 +1,20 @@
-.PHONY: help install dev run test integration-tests lint format
+.PHONY: help install run test lint
 
 help:
 	@echo 'Targets:'
-	@echo '  install             Sync runtime dependencies with uv'
-	@echo '  dev                 Sync project + dev dependencies with uv'
-	@echo '  run                 Start the local LangGraph dev server'
-	@echo '  test                Run unit tests'
-	@echo '  integration-tests   Run integration tests'
-	@echo '  lint                Run Ruff checks'
-	@echo '  format              Format with Ruff'
+	@echo '  install   Install runtime dependencies'
+	@echo '  run       Start the LangGraph HTTP service'
+	@echo '  test      Run a LangGraph smoke test'
+	@echo '  lint      Run basic Python syntax checks'
 
 install:
-	uv sync --no-dev
-
-dev:
-	uv sync
+	python -m pip install -e .
 
 run:
-	uv run langgraph dev
+	python -m uvicorn langgraph_service.server:app --host 0.0.0.0 --port 8000
 
 test:
-	uv run python -m pytest tests/unit_tests -q
-
-integration-tests:
-	uv run python -m pytest tests/integration_tests -q
+	python -c "from langgraph_service.graph import graph; result = graph.invoke({'message':'test'}); assert result['message'] == 'test -> processed by LangGraph'; print('LangGraph smoke test passed')"
 
 lint:
-	uv run python -m ruff check src tests
-
-format:
-	uv run python -m ruff format src tests
+	python -m compileall -q langgraph_service

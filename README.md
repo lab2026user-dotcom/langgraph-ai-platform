@@ -1,60 +1,25 @@
-# Simple Agent Template
+# On-Prem LangGraph Service
 
-Minimal deployment template for a LangChain agent built with `create_agent(...)`.
+Standalone on-prem LangGraph service using the official open-source LangGraph core with a thin Starlette HTTP adapter.
 
-## What this template gives you
+## Architecture
 
-- A deployable LangGraph entrypoint at `src/simple_agent/graph.py`.
-- Two small tools (`utc_now`, `calculator`) for predictable local behavior.
-- `langgraph.json` configured for LangSmith/LangGraph deployment.
-- A `uv`-managed local workflow with a small `Makefile` wrapper and starter tests.
+Existing FastAPI -> LangGraph Service -> LangGraph Core
 
-## Quickstart
+## Endpoints
 
-1. Sync the project with `uv`:
+GET /health
+POST /invoke
 
-```bash
-uv sync --dev
-```
+## Source
 
-2. Configure environment:
+Official LangGraph source is included under libs/langgraph.
+Source commit: 11ee185999b86bfea2d8c0e69cef9a5e37acf686
 
-```bash
-cp .env.example .env
-```
+## Runtime
 
-3. Run locally:
+Python 3.11, Starlette, and Uvicorn.
 
-```bash
-uv run langgraph dev
-```
+The service does not directly install langgraph-api, langgraph-runtime-inmem, langchain, or langchain-ollama.
 
-Optional `make` wrappers:
-
-```bash
-make dev
-make run
-```
-
-## Tests and lint
-
-```bash
-make test
-make integration-tests
-make lint
-make format
-```
-
-Integration tests are skipped unless `ANTHROPIC_API_KEY` is set.
-
-## Deploy to LangSmith
-
-1. Push this template to a Git repository.
-2. In LangSmith, create a new Deployment from that repo.
-3. Set required environment variables (`ANTHROPIC_API_KEY`, optionally `LANGSMITH_API_KEY`).
-4. Deploy using `langgraph.json` defaults.
-
-## Reference docs
-
-- LangChain quickstart: https://docs.langchain.com/oss/python/langchain/quickstart
-- LangChain deployment: https://docs.langchain.com/oss/python/langchain/deploy
+Container builds use Argo Workflows, Kaniko, and Harbor.

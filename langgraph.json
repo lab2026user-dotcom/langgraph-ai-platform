@@ -2,7 +2,7 @@
   "python_version": "3.11",
   "dependencies": ["."],
   "graphs": {
-    "agent": "simple_agent.graph:graph"
+    "agent": "langgraph_service.graph:graph"
   },
   "env": ".env",
   "image_distro": "wolfi"
