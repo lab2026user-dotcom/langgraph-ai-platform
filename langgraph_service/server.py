@@ -1,5 +1,5 @@
-
 from starlette.applications import Starlette
+from starlette.concurrency import run_in_threadpool
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
@@ -25,9 +25,10 @@ async def invoke(request: Request):
             status_code=400,
         )
 
-    result = graph.invoke({
-        "message": message
-    })
+    result = await run_in_threadpool(
+        graph.invoke,
+        {"message": message},
+    )
 
     return JSONResponse(result)
 
@@ -36,6 +37,7 @@ routes = [
     Route("/health", health, methods=["GET"]),
     Route("/invoke", invoke, methods=["POST"]),
 ]
+
 
 app = Starlette(
     debug=False,
