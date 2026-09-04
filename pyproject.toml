@@ -10,6 +10,9 @@ dependencies = [
     "uvicorn>=0.34.0",
 ]
 
+[tool.setuptools.packages.find]
+include = ["langgraph_service*"]
+
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
