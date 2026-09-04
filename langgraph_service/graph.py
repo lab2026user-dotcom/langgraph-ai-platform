@@ -1,6 +1,6 @@
 import json
 import os
-from typing import TypedDict
+from typing_extensions import TypedDict
 from urllib.request import Request, urlopen
 
 from langgraph.graph import StateGraph, START, END
