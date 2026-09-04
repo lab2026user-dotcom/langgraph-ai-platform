@@ -8,3 +8,5 @@ __pycache__
 .mypy_cache
 .env
 .DS_Store
+
+.langgraph_api
